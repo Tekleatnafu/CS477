@@ -1,0 +1,28 @@
+ #1. Explain why do we want sometimes to use setImmediate instead of using setTimeout?
+		Ans:setTimeout runs in Timer phase, setImmediate runs in check phase. If there's a case needs to run just before close phase, we can use setImmediate.
+	#2. Explain the difference between process.nextTick and setImmediate?
+			1.callback of process.nextTick get executed multiple chances in one iteration - highest priotiry
+			2.how many callbacks will be executed in one iteration? process.nextTick() - all of callbacks in nextTick queue, drain out - Don't use 3.while true loop on process.nextTick setImmediate - certain, the remaining for next iteration/tick
+				process.nextTick - API provided natively by Node.js setTimeout, setImmediate - provided by libuv
+
+	#3. Name 10 global modules/methods available in Node environment.
+		 1. Buffer: The Buffer class is an inbuilt globally accessible class that means it can be used without importing any module.
+		 2. console: It is an inbuilt global object used to print out the final result of the excution. 
+		 3.	setImmediate() method: It schedules the immediate execution of the callback. 
+		 4.	clearImmediate() method: It stops the immediate object returned by the setImmediate() method.
+		 5.	setInterval() method: It executes the callback function at repeated intervals.
+		 6.	clearInterval() method: It stops the interval object created by setInterval() method. 
+		 7.	setTimeout() method: It is a global function used to run a callback function after at least delay in milliseconds.
+		 8.	clearTimeout() method: The clearTimeout() method is used to cancel or stop a timeout that was set with setTimeout() method. 
+		 9. queueMicrotask() method: A microtask is a short function that is executed after the callback function exits and only if 
+		    the JavaScript execution stack is empty.
+		 10. TextEncoder: It is an implementation of the WHATWG Encoding Standard TextEncoder API. All instances of TextEncoder are encoded 
+		     in UTF-8 only. 
+		 11. TextDecoder: It is an implementation of the WHATWG Encoding Standard TextDecoder API. 
+		 12. Class: URL-> The URL class instance is a global object and is implemented by the following WHATWG URL Standard. 
+		 13. WebAssembly: The global object that acts as a namespace for all W3C WebAssembly related functionality.
+		 14. require(id) method: It is used to import modules and returns an object of ‘any’ datatype.
+		 15. exports: It is used to exports modules using module.exports.
+		 16. module: It is a reference to the current module and is not global rather local to each module. It is used to make a 
+		     particular module available through require() in the application. 
+
