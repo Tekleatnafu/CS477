@@ -1,33 +1,33 @@
 window.onload = function () {
-  getProducts();
+  getBooks();
 
   document.getElementById("nav-home").onclick = function (event) {
     event.preventDefault();
-    getProducts();
+    getBooks();
   };
 
   // add/update product
-  document.getElementById("product-btn").onclick = function (event) {
+  document.getElementById("book-btn").onclick = function (event) {
     event.preventDefault();
-    if (!document.getElementById("product-btn").dataset.id) {
-      addProduct();
+    if (!document.getElementById("book-btn").dataset.id) {
+      addBook();
     } else {
-      editProduct();
+      editBook();
     }
   };
 };
 
-async function getProducts() {
-  let products = await fetch("http://localhost:3000/books/").then((response) =>
+async function getBooks() {
+  let books = await fetch("http://localhost:3000/books/").then((response) =>
     response.json()
   );
-  products.forEach((prod) => renderBook(prod));
+  books.forEach((bok) => renderBook(bok));
 }
 
-function renderBook(prod) {
+function renderBook(bok) {
   const div = document.createElement("div");
   div.classList = "col-lg-4";
-  div.id = prod.id;
+  div.id = bok.id;
   div.innerHTML = `<svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false">
 	<title>Placeholder</title>
 	<rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#777"
@@ -35,10 +35,10 @@ function renderBook(prod) {
 	</svg>`;
 
   const h2 = document.createElement("h2");
-  h2.textContent = prod.title;
+  h2.textContent = bok.title;
 
   const isbn = document.createElement("p");
-  isbn.textContent = prod.isbn;
+  isbn.textContent = bok.isbn;
 
   const publishedDate = document.createElement("p");
   publishedDate.textContent = prod.publishedDate;
@@ -57,12 +57,12 @@ function renderBook(prod) {
   updateBtn.textContent = "UPDATE";
   updateBtn.addEventListener("click", function (event) {
     event.preventDefault();
-    document.getElementById("product-heading").textContent = "Edit Product";
+    document.getElementById("book-heading").textContent = "Edit Book";
     document.getElementById("title").value = prod.title;
     document.getElementById("isbn").value = prod.isbn;
     document.getElementById("publishedDate").value = prod.publishedDate;
     document.getElementById("author").value = prod.author;
-    document.getElementById("product-btn").dataset.id = prod.id;
+    document.getElementById("book-btn").dataset.id = prod.id;
   });
 
   const deleteBtn = document.createElement("a");
@@ -71,7 +71,7 @@ function renderBook(prod) {
   deleteBtn.addEventListener("click", function (event) {
     event.preventDefault();
 
-    fetch("http://localhost:3000/books/" + prod.id, {
+    fetch("http://localhost:3000/books/" + bok.id, {
       method: "DELETE",
     }).then((response) => {
       alert("Delete Successfully!");
@@ -84,10 +84,10 @@ function renderBook(prod) {
 
   div.appendChild(actions);
 
-  document.getElementById("products").appendChild(div);
+  document.getElementById("books").appendChild(div);
 }
 
-async function addProduct() {
+async function addBook() {
   let result = await fetch("http://localhost:3000/books/", {
     method: "POST",
     headers: {
@@ -100,17 +100,17 @@ async function addProduct() {
       author: document.getElementById("author").value,
     }),
   }).then((res) => res.json());
-  document.getElementById("product-form").reset();
+  document.getElementById("book-form").reset();
   renderBook(result);
 }
 
-function editProduct() {
-  const prodId = document.getElementById("product-btn").dataset.id;
+function editBook() {
+  const bId = document.getElementById("book-btn").dataset.id;
   const title = document.getElementById("title").value;
   const isbn = document.getElementById("isbn").value;
   const publishedDate = document.getElementById("publishedDate").value;
   const author = document.getElementById("author").value;
-  fetch("http://localhost:3000/books/" + prodId, {
+  fetch("http://localhost:3000/books/" + bId, {
     method: "PUT",
     headers: {
       "Content-type": "application/json",
@@ -124,15 +124,15 @@ function editProduct() {
   })
     .then((response) => response.json())
     .then((jsonObj) => {
-      const productDiv = document.getElementById(prodId);
-      productDiv.querySelector("h2").textContent = title;
-      const paragraphArr = productDiv.querySelectorAll("p");
+      const bookDiv = document.getElementById(bId);
+      bookDiv.querySelector("h2").textContent = title;
+      const paragraphArr = bookDiv.querySelectorAll("p");
       paragraphArr[0].textContent = isbn;
       paragraphArr[1].textContent = publishedDate;
       paragraphArr[2].textContent = author;
 
-      document.getElementById("product-heading").textContent = "Add a new Book";
-      document.getElementById("product-btn").dataset.id = "";
-      document.getElementById("product-form").reset();
+      document.getElementById("book-heading").textContent = "Add a new Book";
+      document.getElementById("book-btn").dataset.id = "";
+      document.getElementById("book-form").reset();
     });
 }
